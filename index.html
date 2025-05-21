@@ -29,26 +29,6 @@
         .insight-card { background-color: #073B4C; color: #F8F9FA; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2), 0 4px 6px -2px rgba(0,0,0,0.1); }
         .insight-card h2 { color: #06D6A0; border-bottom-color: #06D6A0;}
         .insight-card ul li strong { color: #FFD166; }
-        .gemini-button {
-            background-color: #FFD166; color: #073B4C; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: background-color 0.3s;
-            display: inline-flex; align-items: center; gap: 0.5rem;
-        }
-        .gemini-button:hover { background-color: #FFC300; }
-        .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);
-            display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem;
-        }
-        .modal-content { background-color: white; padding: 2rem; border-radius: 0.75rem; max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto;}
-        .modal-close-btn { background-color: #FF6B6B; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; float: right; }
-        .loading-spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 24px; height: 24px;
-            border-radius: 50%;
-            border-left-color: #073B4C;
-            animation: spin 1s ease infinite;
-            display: inline-block; margin-right: 0.5rem;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 p-4 md:p-8">
@@ -82,10 +62,7 @@
         </section>
 
         <section id="1day-intern" class="mb-16 card">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-accent4 mb-0">1dayインターン経由 分析</h2>
-                <button id="improve1dayBtn" class="gemini-button">✨ 改善点を提案</button>
-            </div>
+            <h2 class="text-accent4">1dayインターン経由 分析</h2>
             <p class="mb-8 text-gray-700">1dayインターンシップを経由した候補者の選考ファネルと、主要な段階における転換率を詳細に分析します。このチャネルは最大の母集団を形成しています。</p>
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
                 <div class="lg:col-span-3">
@@ -121,10 +98,7 @@
         </section>
 
         <section id="2days-intern" class="mb-16 card">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-accent4 mb-0">2daysインターン経由 分析</h2>
-                <button id="improve2daysBtn" class="gemini-button">✨ 改善点を提案</button>
-            </div>
+            <h2 class="text-accent4">2daysインターン経由 分析</h2>
             <p class="mb-8 text-gray-700">2daysインターンシップ経由の候補者の選考ファネルと転換率です。より深い企業理解を経た候補者群の動向に注目します。</p>
              <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
                 <div class="lg:col-span-3">
@@ -160,10 +134,7 @@
         </section>
 
         <section id="regular-selection" class="mb-16 card">
-             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-accent4 mb-0">通常選考経由 分析</h2>
-                <button id="improveRegularBtn" class="gemini-button">✨ 改善点を提案</button>
-            </div>
+            <h2 class="text-accent4">通常選考経由 分析</h2>
             <p class="mb-8 text-gray-700">インターンシップを経由しない通常選考プロセスの候補者の動向です。他チャネルとの比較において基準となるデータです。</p>
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
                 <div class="lg:col-span-3">
@@ -227,16 +198,16 @@
         </section>
 
         <section id="insights-conclusion" class="mb-12 insight-card">
-            <div class="flex justify-between items-center">
-                <h2 class="mb-0">主要な洞察と戦略的提言</h2>
-                <button id="regenerateInsightsBtn" class="gemini-button">✨ 提言を再生成</button>
-            </div>
-            <div id="geminiInsightsContent" class="text-gray-300 space-y-4 mt-6 text-base">
-                <p>上記の「提言を再生成」ボタンをクリックして、最新のデータに基づいたAIによる洞察と戦略的提言を取得してください。</p>
-                <div id="insightsLoader" class="text-center py-4" style="display: none;">
-                    <div class="loading-spinner"></div>
-                    <p>AIが分析中です...</p>
-                </div>
+            <h2>主要な洞察と戦略的提言</h2>
+            <div class="text-gray-300 space-y-4 mt-6 text-base">
+                <p>本データ分析から、以下の重要な傾向と戦略的ポイントが明らかになりました。</p>
+                <ul class="list-disc list-inside space-y-3 pl-4">
+                    <li><strong>2daysインターン経由</strong>は、SPI合格率 (76.9%) および内定率 (65.2%) が他チャネルより顕著に高いものの、最終的な内定承諾率は26.7%と最も低い水準です。これは、質の高い候補者を集められている一方で、内定後のフォローアップや魅力づけに改善の余地があることを示唆しています。</li>
+                    <li><strong>1dayインターン経由</strong>は、4439名と圧倒的なエントリー数を誇り、広範な母集団形成に貢献しています。しかし、内定承諾率は32.2%と中程度であり、選考プロセス後半での候補者エンゲージメント強化が求められます。</li>
+                    <li><strong>通常選考経由</strong>は、内定承諾率が44.0%と最も高く、採用の確実性に優れています。エントリーからSPI受検までの歩留まりも良好ですが、面接段階での通過率向上が更なる成果に繋がる可能性があります。</li>
+                    <li>エントリーから内定承諾までの<strong>総合転換率</strong>では、通常選考(0.45%)、2daysインターン(0.42%)、1dayインターン(0.23%)の順となりました。各チャネルの特性を理解し、ターゲットとする候補者層や採用目的に応じた最適なリソース配分が重要です。</li>
+                </ul>
+                <p class="mt-6 font-semibold">これらの洞察に基づき、各チャネルの強みを活かしつつ、弱点を補強する具体的な施策（例：2daysインターン後の内定者向け特別プログラム、1dayインターン参加者の早期選考フォロー等）を検討し、採用活動全体の効率性と質を高めていくことが推奨されます。</p>
             </div>
         </section>
 
@@ -245,24 +216,7 @@
         </footer>
     </div>
 
-    <div id="improvementModal" class="modal">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="modalTitle" class="text-xl font-bold text-primary">改善提案</h3>
-                <button id="modalCloseBtn" class="modal-close-btn">&times;</button>
-            </div>
-            <div id="modalBody" class="text-gray-700 space-y-3">
-                <p>ここにAIからの改善提案が表示されます。</p>
-            </div>
-            <div id="modalLoader" class="text-center py-4" style="display: none;">
-                <div class="loading-spinner"></div>
-                <p>AIが提案を生成中です...</p>
-            </div>
-        </div>
-    </div>
-
 <script>
-// Chart.jsのデータとオプション (変更なし)
 function wrapLabel(str, maxWidth) {
     if (typeof str !== 'string') return '';
     if (str.length <= maxWidth) {
@@ -326,6 +280,7 @@ const funnelChartOptions = {
         y: {
             ticks: { color: '#073B4C', autoSkip: false, font: { size: 11 } },
             grid: { display: false }
+            // reverse: true  <- この行を削除またはfalseに設定
         }
     }
 };
@@ -360,10 +315,8 @@ const chartColors = {
 };
 
 const data1dayRaw = {
-    name: '1dayインターン経由',
     labels: ['エントリー', 'SPI受検', 'SPI合格', 'IS予約', 'IS参加', '選考希望アンケート', '会社説明会_予約', '会社説明会_参加', '1次面接_予約', '1次面接_参加', '1次面接_合格', '2次面接_予約', '2次面接_参加', '2次面接_合格', '最終面接_予約', '最終面接_参加', '内定', '内定承諾'],
-    values: [4439, 1506, 996, 615, 422, 407, 382, 356, 305, 300, 155, 149, 144, 81, 70, 69, 31, 10],
-    rates: { spiExamRate: 33.9, spiPassRate: 66.1, isBookingRate: 61.7, isParticipationRate: 68.6, infoSessionBookingRate: 96.4, infoSessionParticipationRate: 93.9, firstInterviewBookingRate: 85.7, firstInterviewParticipationRate: 98.4, firstInterviewPassRate: 51.7, secondInterviewBookingRate: 96.1, secondInterviewParticipationRate: 96.6, secondInterviewPassRate: 56.3, finalInterviewBookingRate: 86.4, finalInterviewParticipationRate: 98.6, offerRate: 44.9, offerAcceptanceRate: 32.2 }
+    values: [4439, 1506, 996, 615, 422, 407, 382, 356, 305, 300, 155, 149, 144, 81, 70, 69, 31, 10]
 };
 const funnel1dayData = {
     labels: data1dayRaw.labels.map(l => wrapLabel(l, 16)),
@@ -372,10 +325,8 @@ const funnel1dayData = {
 new Chart(document.getElementById('funnel1day'), { type: 'bar', data: funnel1dayData, options: funnelChartOptions });
 
 const data2daysRaw = {
-    name: '2daysインターン経由',
     labels: ['エントリー', 'SPI受検', 'SPI合格', 'IS予約', 'IS参加', '選考希望アンケート', '2次面接予約', '2次面接参加', '2次面接合格', '最終面接予約', '最終面接参加', '内定', '内定承諾'],
-    values: [1911, 615, 473, 244, 132, 132, 101, 100, 56, 46, 46, 30, 8],
-    rates: { spiExamRate: 32.2, spiPassRate: 76.9, isBookingRate: 51.6, isParticipationRate: 54.1, selectionSurveyRate: 100.0, secondInterviewBookingRate: 76.5, secondInterviewParticipationRate: 99.0, secondInterviewPassRate: 56.0, finalInterviewBookingRate: 82.1, finalInterviewParticipationRate: 100.0, offerRate: 65.2, offerAcceptanceRate: 26.7 }
+    values: [1911, 615, 473, 244, 132, 132, 101, 100, 56, 46, 46, 30, 8]
 };
 const funnel2daysData = {
     labels: data2daysRaw.labels.map(l => wrapLabel(l, 16)),
@@ -384,10 +335,8 @@ const funnel2daysData = {
 new Chart(document.getElementById('funnel2days'), { type: 'bar', data: funnel2daysData, options: funnelChartOptions });
 
 const dataRegularRaw = {
-    name: '通常選考経由',
     labels: ['エントリー', '会社説明会_予約', '会社説明会_参加', '選考希望アンケート', 'SPI受検', 'SPI合格', '1次面接_予約', '1次面接_参加', '1次面接_合格', '2次面接_予約', '2次面接_参加', '2次面接_合格', '最終面接_予約', '最終面接_参加', '内定', '内定承諾'],
-    values: [2455, 2161, 1631, 1517, 1102, 773, 587, 563, 247, 196, 179, 74, 55, 55, 25, 11],
-    rates: { infoSessionBookingRate: 88.0, infoSessionParticipationRate: 75.5, selectionSurveyRate: 93.0, spiExamRate: 72.6, spiPassRate: 70.1, firstInterviewBookingRate: 75.9, firstInterviewParticipationRate: 95.9, firstInterviewPassRate: 43.9, secondInterviewBookingRate: 79.4, secondInterviewParticipationRate: 91.3, secondInterviewPassRate: 41.3, finalInterviewBookingRate: 74.3, finalInterviewParticipationRate: 100.0, offerRate: 45.5, offerAcceptanceRate: 44.0 }
+    values: [2455, 2161, 1631, 1517, 1102, 773, 587, 563, 247, 196, 179, 74, 55, 55, 25, 11]
 };
 const funnelRegularData = {
     labels: dataRegularRaw.labels.map(l => wrapLabel(l, 16)),
@@ -413,136 +362,6 @@ const overallConversionRateData = {
     datasets: [{ label: '総合転換率 (%)', data: [((10 / 4439) * 100).toFixed(2), ((8 / 1911) * 100).toFixed(2), ((11 / 2455) * 100).toFixed(2)], backgroundColor: [chartColors.c1, chartColors.c2, chartColors.c3] }]
 };
 new Chart(document.getElementById('comparisonOverallConversionRate'), { type: 'bar', data: overallConversionRateData, options: {...comparisonChartOptions, plugins: {...comparisonChartOptions.plugins, legend: {display: false}} }});
-
-// Gemini API Integration
-const geminiInsightsContent = document.getElementById('geminiInsightsContent');
-const insightsLoader = document.getElementById('insightsLoader');
-const regenerateInsightsBtn = document.getElementById('regenerateInsightsBtn');
-
-const improvementModal = document.getElementById('improvementModal');
-const modalTitle = document.getElementById('modalTitle');
-const modalBody = document.getElementById('modalBody');
-const modalLoader = document.getElementById('modalLoader');
-const modalCloseBtn = document.getElementById('modalCloseBtn');
-
-const improve1dayBtn = document.getElementById('improve1dayBtn');
-const improve2daysBtn = document.getElementById('improve2daysBtn');
-const improveRegularBtn = document.getElementById('improveRegularBtn');
-
-const apiKey = ""; // APIキーは空のままにします
-
-async function callGeminiAPI(prompt) {
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-    const payload = {
-        contents: [{ role: "user", parts: [{ text: prompt }] }]
-    };
-
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Gemini API Error:', errorData);
-            return `Gemini APIからの応答エラー: ${response.status} ${response.statusText}. 詳細はコンソールを確認してください。`;
-        }
-        const result = await response.json();
-        if (result.candidates && result.candidates.length > 0 &&
-            result.candidates[0].content && result.candidates[0].content.parts &&
-            result.candidates[0].content.parts.length > 0) {
-            return result.candidates[0].content.parts[0].text;
-        } else {
-            console.error('Unexpected Gemini API response structure:', result);
-            return "AIからの応答が予期しない形式です。";
-        }
-    } catch (error) {
-        console.error('Error calling Gemini API:', error);
-        return `Gemini APIの呼び出し中にエラーが発生しました: ${error.message}`;
-    }
-}
-
-function formatChannelDataForPrompt(channelData) {
-    let summary = `${channelData.name}:\n`;
-    summary += `- エントリー数: ${channelData.values[0]}名\n`;
-    
-    const findRate = (labelStart) => {
-        for (const key in channelData.rates) {
-            if (key.toLowerCase().startsWith(labelStart.toLowerCase().replace(/ /g, ''))) {
-                return channelData.rates[key];
-            }
-        }
-        return 'N/A';
-    };
-
-    if (channelData.rates.spiPassRate) summary += `- SPI合格率: ${channelData.rates.spiPassRate}%\n`;
-    if (channelData.rates.firstInterviewPassRate) summary += `- 1次面接合格率: ${channelData.rates.firstInterviewPassRate}%\n`;
-    if (channelData.rates.secondInterviewPassRate) summary += `- 2次面接合格率: ${channelData.rates.secondInterviewPassRate}%\n`;
-    if (channelData.rates.offerRate) summary += `- 内定率: ${channelData.rates.offerRate}%\n`;
-    if (channelData.rates.offerAcceptanceRate) summary += `- 内定承諾率: ${channelData.rates.offerAcceptanceRate}%\n`;
-    const overallConversion = ((channelData.values[channelData.values.length -1] / channelData.values[0]) * 100).toFixed(2);
-    summary += `- 総合転換率(内定承諾/エントリー): ${overallConversion}%\n`;
-    return summary;
-}
-
-async function fetchAndDisplayInsights() {
-    insightsLoader.style.display = 'block';
-    geminiInsightsContent.innerHTML = ''; // Clear previous content
-
-    const dataSummary = [data1dayRaw, data2daysRaw, dataRegularRaw]
-        .map(formatChannelDataForPrompt)
-        .join('\n');
-
-    const prompt = `あなたは採用戦略の専門家です。以下の採用チャネル別データに基づいて、企業が採用活動を改善するための主要な洞察と具体的な戦略的提言を日本語でマークダウン形式（箇条書き）で3～5点述べてください。各提言は、データに基づいた具体的な根拠も示すようにしてください。\n\n${dataSummary}`;
-
-    const insights = await callGeminiAPI(prompt);
-    insightsLoader.style.display = 'none';
-    geminiInsightsContent.innerHTML = insights.replace(/\n/g, '<br>'); // Basic markdown to HTML
-}
-
-
-async function fetchAndDisplayChannelImprovements(channelData) {
-    modalLoader.style.display = 'block';
-    modalBody.innerHTML = 'AIが提案を生成中です...';
-    improvementModal.style.display = 'flex';
-    modalTitle.textContent = `${channelData.name} の改善提案`;
-
-    let funnelDetails = `${channelData.name} の採用ファネルデータ:\n`;
-    channelData.labels.forEach((label, index) => {
-        funnelDetails += `- ${label}: ${channelData.values[index]}名`;
-        // Calculate and add conversion rate from previous step if applicable
-        if (index > 0 && channelData.values[index-1] > 0) {
-            const rate = ((channelData.values[index] / channelData.values[index-1]) * 100).toFixed(1);
-            funnelDetails += ` (前段階からの転換率: ${rate}%)`;
-        }
-        funnelDetails += '\n';
-    });
-    
-    const prompt = `あなたは採用コンサルタントです。以下の『${channelData.name}』の採用ファネルデータに基づいて、このチャネルの弱点を特定し、具体的な改善策を日本語でマークダウン形式（箇条書き）で2～3点提案してください。\n\n${funnelDetails}`;
-    
-    const improvements = await callGeminiAPI(prompt);
-    modalLoader.style.display = 'none';
-    modalBody.innerHTML = improvements.replace(/\n/g, '<br>');
-}
-
-regenerateInsightsBtn.addEventListener('click', fetchAndDisplayInsights);
-
-improve1dayBtn.addEventListener('click', () => fetchAndDisplayChannelImprovements(data1dayRaw));
-improve2daysBtn.addEventListener('click', () => fetchAndDisplayChannelImprovements(data2daysRaw));
-improveRegularBtn.addEventListener('click', () => fetchAndDisplayChannelImprovements(dataRegularRaw));
-
-modalCloseBtn.addEventListener('click', () => {
-    improvementModal.style.display = 'none';
-});
-window.addEventListener('click', (event) => {
-    if (event.target === improvementModal) {
-        improvementModal.style.display = 'none';
-    }
-});
-
-// 初期表示時に洞察を読み込む
-fetchAndDisplayInsights();
 
 </script>
 </body>
