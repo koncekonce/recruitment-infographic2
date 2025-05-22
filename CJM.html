@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ラクス新卒採用：内定者エンゲージメント戦略（意思決定支援期）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #FFF8F0; /* Light Orange Background */
+            color: #4A2700; /* Dark Brown Text Color */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; 
+            max-height: 400px;
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .kpi-card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 1.5rem; /* p-6 */
+            box-shadow: 0 8px 16px -2px rgba(204, 102, 0, 0.1), 0 4px 8px -2px rgba(204, 102, 0, 0.06); /* Orange Shadow */
+            text-align: center;
+            border: 1px solid #FFDAB9; /* Light Peach Border */
+        }
+        .kpi-value {
+            font-size: 2rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            color: #FF6600; /* RAKUS Orange */
+        }
+        .kpi-label {
+            font-size: 0.875rem; /* text-sm */
+            color: #8C4B00; /* Medium Brown Text */
+            margin-top: 0.5rem; /* mt-2 */
+        }
+        .section-title {
+            font-size: 1.75rem; /* text-2xl */
+            font-weight: 700; /* font-bold */
+            color: #CC5200; /* Darker RAKUS Orange */
+            margin-bottom: 1rem; /* mb-4 */
+            padding-bottom: 0.5rem; /* pb-2 */
+            border-bottom: 2px solid #FF8C00; /* Medium RAKUS Orange */
+        }
+        .sub-section-title {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            color: #A54200; /* Slightly Darker RAKUS Orange */
+            margin-top: 1.5rem; /* mt-6 */
+            margin-bottom: 0.75rem; /* mb-3 */
+        }
+        
+        .pill {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 9999px; /* rounded-full */
+            font-size: 0.75rem; /* text-xs */
+            font-weight: 500; /* font-medium */
+            margin: 0.25rem;
+            border: 1px solid;
+        }
+        .pill-philosophy { background-color: #FFF0E6; color: #D95B00; border-color: #FFB870; } /* Light Orange Pill */
+        .pill-profession { background-color: #FFF7E0; color: #B87400; border-color: #FFD073; } /* Light Yellow-Orange Pill */
+        .pill-people { background-color: #FFEBE6; color: #C74200; border-color: #FFA07A; }    /* Light Red-Orange Pill */
+        .pill-privilege { background-color: #FFF3E0; color: #A66A00; border-color: #FFC88A; } /* Light Brown-Orange Pill */
+
+        .details-summary {
+            padding: 0.75rem 1rem;
+            background-color: #FFF3E0; /* Lighter Orange for summary */
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #CC5200; /* Darker RAKUS Orange */
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #FFDAB9;
+        }
+        .details-summary::after {
+            content: '▼'; /* Down arrow */
+            transition: transform 0.2s ease-in-out;
+            color: #FF6600;
+        }
+        details[open] .details-summary::after {
+            transform: rotate(180deg); /* Up arrow */
+        }
+        .details-content {
+            padding: 1rem;
+            background-color: #ffffff;
+            border: 1px solid #FFDAB9;
+            border-top: none;
+            border-radius: 0 0 0.375rem 0.375rem;
+        }
+        .monthly-journey-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem; /* mb-8 */
+            box-shadow: 0 4px 12px rgba(204, 102, 0, 0.08);
+            font-size: 0.875rem; /* text-sm */
+            background-color: white;
+        }
+        .monthly-journey-table th, .monthly-journey-table td {
+            border: 1px solid #FFDAB9; /* Light Peach Border */
+            padding: 0.75rem; /* p-3 */
+            text-align: left;
+            vertical-align: top;
+        }
+        .monthly-journey-table th {
+            background-color: #FFEFE0; /* Very Light Orange for row headers */
+            color: #A54200; /* Darker RAKUS Orange */
+            font-weight: 600;
+            width: 25%; /* Width for the first column (labels) */
+        }
+        .monthly-journey-table td ul {
+            list-style-position: inside;
+            padding-left: 0;
+            margin: 0;
+        }
+        .monthly-journey-table td ul li {
+            margin-bottom: 0.25rem;
+        }
+        .month-header {
+            background-color: #FF8C00; /* Medium RAKUS Orange */
+            color: white;
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 700;
+            padding: 0.75rem;
+            text-align: center;
+            border-radius: 0.375rem 0.375rem 0 0; /* rounded-t-md */
+        }
+
+    </style>
+    <!-- Application Structure Plan: The SPA structure remains thematic and dashboard-like. Key modifications include:
+        1. Reframing the Jan-Mar journey: This period is now explicitly for candidates who have received an offer but are still in the decision-making phase (potentially comparing with other offers). Content emphasizes reaffirming RAKUS's value proposition and addressing final decision-making anxieties.
+        2. Revision of Candidate Journey Map Table: The table now focuses *exclusively* on the "内定保有～意思決定(1月～3月)" phase. It is restructured into three separate tables, one for each month (January, February, March). Each table uses a horizontal layout where the "Phases/Aspects" (Candidate Situation, RAKUS Goal, Engagement Measures, Devil Insights Addressed) are row headers, and the content for that month is in the corresponding cells. This change aims to provide a more detailed and clear month-by-month breakdown of the engagement strategy for undecided candidates.
+        The overall user flow is scroll-based, with interactive elements (details/summary for 4Ps) to manage information density. This structure aims to provide a comprehensive yet digestible overview of RAKUS's approach, supporting informed decision-making by candidates. -->
+    <!-- Visualization & Content Choices:
+        - (Existing visualizations like 4P details, KPI cards, Devil Insights Chart, IT Experience Chart, Market Share Chart remain with updated styling)
+        - Report Info: Jan-Mar Engagement Plan (Decision Support Phase) -> Goal: Persuade/Inform/Organize -> Viz: Three separate Styled HTML Tables (one for Jan, Feb, Mar) with horizontal layout for aspects (Tailwind) -> Interaction: Static, for detailed monthly overview -> Justification: Provides a granular, month-by-month view of the strategy targeting undecided candidates, making the plan highly transparent and easy to follow. Replaces the previous tabbed interface and the broader journey map for this specific focus. -> Library: HTML/Tailwind.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All charts are Chart.js (Canvas). Diagrams/layouts are HTML/Tailwind. -->
+    </head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+        <header class="text-center mb-10 md:mb-16">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3" style="color: #FF6600;">ラクス新卒採用</h1>
+            <p class="text-xl md:text-2xl font-semibold" style="color: #A54200;">内定後エンゲージメント戦略：確信ある意思決定への支援</p>
+            <p class="mt-3 text-gray-700 text-sm md:text-base">本稿では、株式会社ラクスが、内定をお持ちの皆様が最終的なご意思決定をされるまでの重要な期間（1月～3月）において、いかにして皆様の疑問や不安に寄り添い、ラクス社でキャリアをスタートさせることへの確信を深めていただくか、その戦略的アプローチを詳述いたします。</p>
+        </header>
+
+        <section class="mb-10 md:mb-16">
+            <h2 class="section-title text-center">1月～3月 内定者エンゲージメント：意思決定支援ジャーニー詳細</h2>
+            <p class="text-center text-gray-600 mb-8 text-sm md:text-base">ラクス社からの内定をお持ちで、現在最終的なご意思決定を進められている皆様に対し、1月から3月にかけて、より深いご理解と確信を支援するための情報提供と対話の機会を月別に計画しております。</p>
+
+            <div class="mb-8">
+                <div class="month-header">1月：情報整理と自己分析支援フェーズ</div>
+                <table class="monthly-journey-table">
+                    <tbody>
+                        <tr>
+                            <th>内定者の状況（想定）</th>
+                            <td>複数の企業から情報を得ており、自身のキャリア観や企業選択の軸を再整理・明確化したい段階。</td>
+                        </tr>
+                        <tr>
+                            <th>ラクス社の目標</th>
+                            <td>ラクス社の提供価値と内定者の志向との接続点を明確化し、客観的な自己分析を支援する情報を提供する。</td>
+                        </tr>
+                        <tr>
+                            <th>エンゲージメント施策</th>
+                            <td>
+                                <ul>
+                                    <li>「ラクス社の提供価値再訪」資料提供（4Pに基づく詳細情報、競合優位性）（<span class="pill pill-philosophy">Philosophy</span> <span class="pill pill-profession">Profession</span>）</li>
+                                    <li>キャリア自己分析ワークシート（任意）と、ラクスでのキャリアパス事例紹介（<span class="pill pill-profession">Profession</span> <span class="pill pill-people">People</span>）</li>
+                                    <li>内定者向け限定ウェビナー：「SaaS業界の将来性とラクス社の戦略的位置づけ」（<span class="pill pill-profession">Profession</span>）</li>
+                                    <li>個別相談窓口の案内（人事担当者によるキャリア相談、疑問解消）（<span class="pill pill-people">People</span>）</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>主なデビルインサイトへの対応</th>
+                            <td>情報過多による混乱、自己のキャリア軸の不明確さ、ラクス社の独自性の再確認。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mb-8">
+                <div class="month-header">2月：比較検討と将来展望フェーズ</div>
+                <table class="monthly-journey-table">
+                    <tbody>
+                        <tr>
+                            <th>内定者の状況（想定）</th>
+                            <td>具体的な企業比較を行い、自身の長期的なキャリア成長や働きがいについて深く考察している段階。</td>
+                        </tr>
+                        <tr>
+                            <th>ラクス社の目標</th>
+                            <td>他社との比較検討においてラクス社が持つ独自の魅力を訴求し、入社後の具体的な成長イメージと働きがいを提示する。</td>
+                        </tr>
+                        <tr>
+                            <th>エンゲージメント施策</th>
+                            <td>
+                                <ul>
+                                    <li>「ラクス社員のリアルボイス」：多様な職種・年次の社員インタビュー（他社経験者含む）（<span class="pill pill-people">People</span> <span class="pill pill-profession">Profession</span>）</li>
+                                    <li>テーマ別小規模オンライン座談会（例：技術スタック、働き方改革、女性活躍）（<span class="pill pill-profession">Profession</span> <span class="pill pill-privilege">Privilege</span>）</li>
+                                    <li>「もしラクスに入社したら」：配属可能性のある部門の紹介とプロジェクト事例（<span class="pill pill-profession">Profession</span>）</li>
+                                    <li>福利厚生・能力開発制度の詳細ガイドブック提供（<span class="pill pill-privilege">Privilege</span>）</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>主なデビルインサイトへの対応</th>
+                            <td>他社比較における判断材料不足、具体的な業務・成長イメージの欠如、企業文化への適合性懸念。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <div class="month-header">3月：最終確認と決断サポートフェーズ</div>
+                <table class="monthly-journey-table">
+                    <tbody>
+                        <tr>
+                            <th>内定者の状況（想定）</th>
+                            <td>意思決定の最終段階。最後の疑問点を解消し、自信を持って決断したいと考えている。</td>
+                        </tr>
+                        <tr>
+                            <th>ラクス社の目標</th>
+                            <td>内定者の最終的な疑問や懸念を払拭し、ラクス社への入社意思を固めるための後押しをする。</td>
+                        </tr>
+                        <tr>
+                            <th>エンゲージメント施策</th>
+                            <td>
+                                <ul>
+                                    <li>「最終意思決定サポートQ&Aセッション」（人事責任者または役員クラス参加）（<span class="pill pill-philosophy">Philosophy</span> <span class="pill pill-people">People</span>）</li>
+                                    <li>内定承諾手続き、入社準備に関する個別ガイダンス（<span class="pill pill-privilege">Privilege</span>）</li>
+                                    <li>（希望者向け）オフィス見学またはバーチャルオフィスツアーの追加機会（<span class="pill pill-people">People</span> <span class="pill pill-privilege">Privilege</span>）</li>
+                                    <li>ラクス社経営陣からのメッセージ動画（改めての歓迎と期待）（<span class="pill pill-philosophy">Philosophy</span>）</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>主なデビルインサイトへの対応</th>
+                            <td>最終的な選択への迷い、入社手続きや準備への不安、企業からの最終的なコミットメント確認。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="mb-10 md:mb-16">
+            <h2 class="section-title text-center">ラクスを支える4つの柱：企業文化と提供価値の再確認</h2>
+            <p class="text-center text-gray-600 mb-8 text-sm md:text-base">ラクス社の企業理念(Philosophy)、事業・仕事内容(Profession)、人的資源・社風(People)、そして待遇・働く環境(Privilege)は、皆様のキャリア選択における重要な判断材料となります。これらの要素が、いかに皆様の成長と安心をサポートし、確かな未来を築く基盤となるか、改めてご紹介いたします。</p>
+            <div class="space-y-4">
+                <details>
+                    <summary class="details-summary">
+                        <span>Philosophy (企業理念)：社会への貢献と誠実な事業姿勢</span>
+                    </summary>
+                    <div class="details-content text-sm text-gray-700 space-y-2">
+                        <p>ラクスは「ITサービスで企業の成長を継続的に支援します」という使命を掲げ、「日本を代表する企業へ」、そして「ITエンジニアを1万人創出する」という高い目標を追求しております。これらの理念は、社会貢献を重視される皆様にとって、企業選択における本質的な価値判断の指標となり得るでしょう。</p>
+                        <p>「自分自身の会社だと思う」「全体最適視点をもつ」「誠意をもって人と接する」というリーダーシッププリンシプルは、我々の組織文化の根幹です。特に「誠意」は、皆様とのコミュニケーションにおいても最重要視しており、企業への信頼を深めていただく基盤であると考えております。</p>
+                    </div>
+                </details>
+                <details>
+                    <summary class="details-summary">
+                        <span>Profession (事業・仕事内容)：市場での卓越性とキャリア機会</span>
+                    </summary>
+                    <div class="details-content text-sm text-gray-700 space-y-3">
+                        <p>主力SaaS「楽楽精算」「楽楽明細」等により中小企業(SMB)市場を牽引し、年間経常収益(ARR)は<strong class="kpi-value text-lg">400億円</strong>を突破。黒字経営による安定した事業基盤の上で、持続的な成長を実現しています。</p>
+                        <p>「再現性」を重視した事業運営と顧客課題解決への注力は、新入社員の方々が早期に成果を実感し、仕事の価値を深く理解できる環境を提供します。SMB市場への貢献は具体的に可視化されやすく、皆様の目的意識と達成感を醸成いたします。</p>
+                        <div class="chart-container mx-auto mt-4 h-64 md:h-72 max-w-sm">
+                            <canvas id="marketShareChart"></canvas>
+                        </div>
+                        <p class="text-center text-xs text-gray-500 mt-1">SMB向けSaaS市場におけるラクス社のポジション (概念図)</p>
+                    </div>
+                </details>
+                <details>
+                    <summary class="details-summary">
+                        <span>People (人的資源・社風)：「相互尊重」の文化と多様な人材の活躍</span>
+                    </summary>
+                    <div class="details-content text-sm text-gray-700 space-y-3">
+                        <p>「いい人が多い」と社員が語る良好な社風、チームワークと知識共有を尊重する文化がラクス社の特徴です。8年連続「働きがいのある会社」としての評価は、その客観的証左です。</p>
+                        <p>中途入社者の約<strong class="kpi-value text-lg">65%</strong>がIT業界未経験者である事実は、多様なバックグラウンドを持つ人材を積極的に受け入れ、育成する組織的土壌と充実した研修・サポート体制の存在を示しています。平均年齢<strong class="kpi-value text-lg">31.8歳</strong>の活力ある組織であり、「失敗を許容する」文化が皆様の挑戦を後押しします。</p>
+                        <div class="chart-container mx-auto mt-4 h-64 md:h-72 max-w-xs">
+                            <canvas id="itExperienceChart"></canvas>
+                        </div>
+                         <p class="text-center text-xs text-gray-500 mt-1">中途入社者のIT業界経験比率</p>
+                    </div>
+                </details>
+                <details>
+                    <summary class="details-summary">
+                        <span>Privilege (待遇・働く環境)：ワークライフバランスと長期的キャリア形成支援</span>
+                    </summary>
+                    <div class="details-content text-sm text-gray-700 space-y-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <div class="kpi-card p-4">
+                                <div class="kpi-value text-2xl">19.8<span class="text-base">時間/月</span></div>
+                                <div class="kpi-label text-xs">平均残業時間</div>
+                            </div>
+                            <div class="kpi-card p-4">
+                                <div class="kpi-value text-2xl">93.2<span class="text-base">%</span></div>
+                                <div class="kpi-label text-xs">有給休暇消化率</div>
+                            </div>
+                        </div>
+                        <p>ワークライフバランスを重視し、マンスリーシフト制度や水曜在宅ワークデーなど柔軟な働き方を提供。「ラクスマイル制度」をはじめとする子育て支援も充実させ、社員のライフステージの変化に寄り添い、長期的なキャリア形成を支援する体制を整えております。</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section class="mb-10 md:mb-16">
+            <h2 class="section-title text-center">内定者の皆様が抱える可能性のある懸念：「デビルインサイト」への対応</h2>
+            <p class="text-center text-gray-600 mb-8 text-sm md:text-base">内定期間中、特に複数の選択肢を検討される中で、様々なご懸念やご不安（デビルインサイト）が生じることは自然なことです。ラクス社はこれらの可能性を理解し、皆様が十分な情報を得てご判断いただけるよう努めます。</p>
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg border border-FFEFE0">
+                <div class="chart-container h-[350px] md:h-[450px] max-h-[500px]">
+                    <canvas id="devilInsightsChart"></canvas>
+                </div>
+                <p class="text-center text-xs text-gray-500 mt-3">内定期間中に生じ得る主な懸念カテゴリ (割合は一般的な傾向を示すイメージです)</p>
+                <div class="mt-4 text-xs md:text-sm text-gray-700 space-y-1">
+                    <p><strong>主な懸念の内訳（例）：</strong>「自身の能力が新環境で通用するか」「期待される成果を出せるか」といった能力面での懸念。「職場の人間関係や組織文化への適応可能性」。「ラクス社が自身にとって最適な選択か、他社と比較してどうか」という比較検討に伴う迷い。「入社後の実情と現時点での理解との間にギャップがないか」という未知の要素への懸念。これらは意思決定プロセスにおいて重要な検討事項です。</p>
+                    <p>ラクス社は、これらの懸念に対して透明性の高い情報提供と、皆様の疑問に真摯にお答えするコミュニケーションを重視いたします。</p>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="text-center mt-12 pt-8 border-t border-FFDAB9">
+            <p class="text-xs text-gray-600">本コンテンツは、株式会社ラクスの採用戦略に関する情報提供を目的として作成されたものです。</p>
+            <p class="text-xs text-gray-600 mt-1">&copy; ラクス Inspired Interactive SPA (Orange Theme)</p>
+        </footer>
+    </div>
+
+<script>
+    const CHART_PRIMARY_ACCENT = '#FF6600'; // RAKUS Orange
+    const CHART_SECONDARY_ACCENT = '#CC5200'; // Darker RAKUS Orange
+    const CHART_NEUTRAL_LIGHT = '#FFDAB9'; // Light Peach
+    const CHART_TEXT_COLOR = '#4A2700'; // Dark Brown
+
+    Chart.defaults.font.family = "'Noto Sans JP', sans-serif";
+    Chart.defaults.color = CHART_TEXT_COLOR;
+
+    function wrapText(text, maxWidthChars) {
+        if (typeof text !== 'string' || text.length <= maxWidthChars) {
+            return text;
+        }
+        const words = text.split(''); 
+        const lines = [];
+        let currentLine = "";
+        for (let i = 0; i < words.length; i++) {
+            if (currentLine.length + words[i].length > maxWidthChars) {
+                lines.push(currentLine);
+                currentLine = "";
+            }
+            currentLine += words[i];
+        }
+        lines.push(currentLine);
+        return lines;
+    }
+
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        if (!item) return '';
+        let label = item.chart.data.labels[item.dataIndex];
+        return Array.isArray(label) ? label.join('') : label;
+    };
+
+    const defaultChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    padding: 15,
+                    font: { size: 10 }
+                }
+            },
+            tooltip: {
+                backgroundColor: 'rgba(74, 39, 0, 0.8)', // Dark Brown tooltip
+                titleFont: { size: 12 },
+                bodyFont: { size: 11 },
+                padding: 10,
+                callbacks: { title: tooltipTitleCallback }
+            }
+        }
+    };
+
+    // Market Share Chart (Conceptual Donut)
+    const marketShareCtx = document.getElementById('marketShareChart')?.getContext('2d');
+    if (marketShareCtx) {
+        new Chart(marketShareCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['ラクス (SMB SaaS)', 'その他競合', '未開拓市場'],
+                datasets: [{
+                    label: '市場シェア (概念)',
+                    data: [40, 35, 25], 
+                    backgroundColor: [CHART_PRIMARY_ACCENT, CHART_SECONDARY_ACCENT, CHART_NEUTRAL_LIGHT],
+                    borderColor: '#FFF8F0', // Body background
+                    borderWidth: 2
+                }]
+            },
+            options: defaultChartOptions
+        });
+    }
+
+    // IT Experience Chart (Donut)
+    const itExperienceCtx = document.getElementById('itExperienceChart')?.getContext('2d');
+    if (itExperienceCtx) {
+        new Chart(itExperienceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['IT業界未経験者', 'IT業界経験者'],
+                datasets: [{
+                    label: '中途入社者のIT業界経験',
+                    data: [65, 35], 
+                    backgroundColor: [CHART_SECONDARY_ACCENT, CHART_PRIMARY_ACCENT],
+                    borderColor: '#FFF8F0',
+                    borderWidth: 2
+                }]
+            },
+            options: defaultChartOptions
+        });
+    }
+
+    // Devil Insights Chart (Horizontal Bar)
+    const devilInsightsCtx = document.getElementById('devilInsightsChart')?.getContext('2d');
+    if (devilInsightsCtx) {
+        const rawLabelsDevil = [
+            '能力・成果への懸念 (新環境での適応)', 
+            '人間関係・組織文化への適合性', 
+            '他社比較と選択への迷い', 
+            '入社後のギャップへの不安',
+            '長期キャリアパスの明確性' // Adjusted based on decision phase
+        ];
+        const wrappedLabelsDevil = rawLabelsDevil.map(label => wrapText(label, 18)); 
+
+        new Chart(devilInsightsCtx, {
+            type: 'bar',
+            data: {
+                labels: wrappedLabelsDevil,
+                datasets: [{
+                    label: '内定期間中の主な懸念 (イメージ)',
+                    data: [70, 80, 75, 60, 65], // Illustrative data for decision phase
+                    backgroundColor: [
+                        'rgba(255, 102, 0, 0.7)',  // RAKUS Orange with alpha
+                        'rgba(204, 82, 0, 0.7)', // Darker RAKUS Orange with alpha
+                        'rgba(255, 165, 0, 0.7)',   // Standard Orange
+                        'rgba(255, 140, 0, 0.7)',  // DarkOrange
+                        'rgba(244, 164, 96, 0.7)'  // SandyBrown (as a lighter orange shade)
+                    ],
+                    borderColor: [
+                        CHART_PRIMARY_ACCENT,
+                        CHART_SECONDARY_ACCENT,
+                        '#FFA500',
+                        '#FF8C00',
+                        '#F4A460'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...defaultChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) { return value + "%" },
+                            font: { size: 10 }
+                        }
+                    },
+                    y: {
+                        ticks: { font: { size: 10 } }
+                    }
+                },
+                plugins: {
+                    ...defaultChartOptions.plugins,
+                    legend: { display: false },
+                    tooltip: {
+                        ...defaultChartOptions.plugins.tooltip,
+                        callbacks: {
+                            ...defaultChartOptions.plugins.tooltip.callbacks,
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) { label += ': '; }
+                                if (context.parsed.x !== null) { label += context.parsed.x + '%'; }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    // Note: Tab functionality script is removed as tabs are replaced by separate tables.
+</script>
+</body>
+</html>
